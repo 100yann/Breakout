@@ -5,6 +5,8 @@ BACKGROUND = (255, 250, 250)
 BLACK = (0, 0, 0)
 options = [0.5, -0.5]
 COLORS = ['red', 'orange', 'green', 'yellow']
+blocks = []
+block_width = int(1280/14)
 
 class Game:
     def __init__(self):
@@ -15,7 +17,7 @@ class Game:
         self.player = pygame.image.load('images/minus.png')
         self.playerX, self.playerY = 600, 550
         self.ball = pygame.image.load('images/ball.png')
-        self.ballX, self.ballY = random.randint(400,700), 200
+        self.ballX, self.ballY = random.randint(400,700), 600
         self.velX = random.choice(options)
         self.velY = -0.5
         self.bounds = self.screen.get_rect()
@@ -25,10 +27,13 @@ class Game:
 
     def main(self):
         running = True
+        for index, color in enumerate(COLORS):
+            self.create_blocks(index*50+200) # Create 4 different lines of blocks
+
         while running:
             self.screen.fill(BACKGROUND)
-            for index, color in enumerate(COLORS):
-                self.create_blocks(color, index*50+200)
+            self.draw_blocks()
+
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -45,6 +50,7 @@ class Game:
 
             self.move_ball()
             self.check_collision()
+            self.detect_block_collision()
             pygame.display.update()
 
 
@@ -71,16 +77,37 @@ class Game:
             # self.velX *= -1
             self.velY *= -1
 
-    def create_blocks(self, color, y):
-        blocks = []
-        width = int(1280/14)
+    def create_blocks(self, y):
         for x in range(14):
-            pygame.draw.rect(self.screen, color, (x*width, y, width, 50))
-            for i in range(4):
-                pygame.draw.rect(self.screen, (0,0,0), (x*width-i, y-i, width, 50), 1)
+            rect = pygame.Rect(x*block_width, y, block_width, 50)
+            blocks.append(rect)
 
-
-
+    def draw_blocks(self):
+        for index, rect in enumerate(blocks):
+            if rect == '-':
+                pass
+            else:
+                if index > len(blocks) - 15:
+                    color = COLORS[3]
+                elif index > len(blocks) - 29:
+                    color = COLORS[2]
+                elif index > len(blocks) - 43:
+                    color = COLORS[1]
+                else:
+                    color = COLORS[0]
+                pygame.draw.rect(self.screen, color, rect)
+                for i in range(4):
+                    pygame.draw.rect(self.screen, (0,0,0), (blocks[index][0]-i, blocks[index][1] - i, block_width, 50), 1)
+        
+    def detect_block_collision(self):
+        for index, rect in enumerate(blocks):
+            if rect == '-':
+                pass
+            else:
+                collide = pygame.Rect.colliderect(self.ball_rect, rect)
+                if collide:
+                    self.velY *= -1
+                    blocks[index] = '-'
         
 
             
