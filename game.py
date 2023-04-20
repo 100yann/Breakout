@@ -4,6 +4,7 @@ import random
 BACKGROUND = (255, 250, 250)
 BLACK = (0, 0, 0)
 options = [0.5, -0.5]
+COLORS = ['red', 'orange', 'green', 'yellow']
 
 class Game:
     def __init__(self):
@@ -23,10 +24,12 @@ class Game:
 
 
     def main(self):
-        print(self.bounds.bottom)
         running = True
         while running:
             self.screen.fill(BACKGROUND)
+            for index, color in enumerate(COLORS):
+                self.create_blocks(color, index*50+200)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -65,10 +68,19 @@ class Game:
         self.ball_rect.topleft = (self.ballX, self.ballY)
         collision = self.player_rect.colliderect(self.ball_rect)
         if collision:
-            self.velX *= -1
+            # self.velX *= -1
             self.velY *= -1
 
-            
+    def create_blocks(self, color, y):
+        blocks = []
+        width = int(1280/14)
+        for x in range(14):
+            pygame.draw.rect(self.screen, color, (x*width, y, width, 50))
+            for i in range(4):
+                pygame.draw.rect(self.screen, (0,0,0), (x*width-i, y-i, width, 50), 1)
+
+
+
         
 
             
