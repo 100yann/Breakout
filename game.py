@@ -3,8 +3,8 @@ import random
 
 BACKGROUND = (255, 250, 250)
 BLACK = (0, 0, 0)
+COLORS = ['red', 'orange', 'yellow', 'green']
 options = [-0.5, 0.5]
-COLORS = ['red', 'orange', 'green', 'yellow']
 blocks = []
 block_width = int(1280/14)
 
@@ -17,7 +17,7 @@ class Game:
         self.player = pygame.image.load('images/minus.png')
         self.playerX, self.playerY = 600, 550
         self.ball = pygame.image.load('images/ball.png')
-        self.ballX, self.ballY = random.randint(400,700), 600
+        self.ballX, self.ballY = random.randint(400,900), 600
         self.velX = random.choice(options)
         self.velY = -0.5
         self.bounds = self.screen.get_rect()
@@ -120,27 +120,27 @@ class Game:
                 self.velY = 1
                 self.velX = 1
             elif "-" in blocks[14:28]:
-                self.velY = 0.8
-                self.velX = 0.8
+                self.velY = 0.85
+                self.velX = 0.85
             elif "-" in blocks[28:42]:
-                self.velY = 0.7
-                self.velX = 0.7
+                self.velY = 0.75
+                self.velX = 0.75
             elif "-" in blocks[42:]:
-                self.velY = 0.6
-                self.velX = 0.6
+                self.velY = 0.65
+                self.velX = 0.65
         else:
             if "-" in blocks[:14]:
                 self.velY = -1
                 self.velX = -1
             elif "-" in blocks[14:28]:
-                self.velY = -0.8
-                self.velX = -0.8
+                self.velY = -0.85
+                self.velX = -0.85
             elif "-" in blocks[28:42]:
-                self.velY = -0.7
-                self.velX = -0.7
+                self.velY = -0.75
+                self.velX = -0.75
             elif "-" in blocks[42:]:
-                self.velY = -0.6
-                self.velX = -0.6
+                self.velY = -0.65
+                self.velX = -0.65
         
 
             
