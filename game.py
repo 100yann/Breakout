@@ -3,7 +3,7 @@ import random
 
 BACKGROUND = (255, 250, 250)
 BLACK = (0, 0, 0)
-options = [0.5, -0.5]
+options = [-0.5, 0.5]
 COLORS = ['red', 'orange', 'green', 'yellow']
 blocks = []
 block_width = int(1280/14)
@@ -30,6 +30,7 @@ class Game:
         for index, color in enumerate(COLORS):
             self.create_blocks(index*50+200) # Create 4 different lines of blocks
 
+        print(len(blocks[42:]), blocks[42:])
         while running:
             self.screen.fill(BACKGROUND)
             self.draw_blocks()
@@ -67,6 +68,8 @@ class Game:
         if self.ballY > 720:
             self.velX = 0
             self.velY = 0
+            print('game over')
+            pygame.quit()
     
     def check_collision(self):
         self.player_rect = pygame.Rect(self.playerX, 675, 260, 50)
@@ -108,6 +111,36 @@ class Game:
                 if collide:
                     self.velY *= -1
                     blocks[index] = '-'
+                    self.increase_speed(self.velY)
+                    break
+
+    def increase_speed(self, Y):
+        if Y > 0:
+            if "-" in blocks[:14]:
+                self.velY = 1
+                self.velX = 1
+            elif "-" in blocks[14:28]:
+                self.velY = 0.8
+                self.velX = 0.8
+            elif "-" in blocks[28:42]:
+                self.velY = 0.7
+                self.velX = 0.7
+            elif "-" in blocks[42:]:
+                self.velY = 0.6
+                self.velX = 0.6
+        else:
+            if "-" in blocks[:14]:
+                self.velY = -1
+                self.velX = -1
+            elif "-" in blocks[14:28]:
+                self.velY = -0.8
+                self.velX = -0.8
+            elif "-" in blocks[28:42]:
+                self.velY = -0.7
+                self.velX = -0.7
+            elif "-" in blocks[42:]:
+                self.velY = -0.6
+                self.velX = -0.6
         
 
             
